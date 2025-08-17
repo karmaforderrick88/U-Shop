@@ -1,0 +1,27 @@
+    <div class="modal-content payment-history-modal-content"> <!-- Added specific class -->
+        <h2 class="modal-title">Payment History for <span id="history-customer-name"></span></h2>
+        <div id="payment-history-message-container" class="message-container"></div>
+        
+        <div class="table-responsive">
+            <table class="history-table">
+                <thead>
+                    <tr> <!-- Removed table-header-row as it's not strictly necessary with th styles -->
+                        <th class="table-header-cell">Amount Paid</th> <!-- Renamed for specificity -->
+                        <th class="table-header-cell">Payment Date</th>
+                        <th class="table-header-cell">Balance After</th>
+                        <th class="table-header-cell">Recorded At</th>
+                    </tr>
+                </thead>
+                <tbody id="payment-history-data">
+                    <!-- Payment history rows will be rendered here by JavaScript -->
+                    <tr><td colspan="4" class="loading-message">Loading history...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal-buttons-group">
+            <button type="button" id="payment-history-form-cancel" class="cancel-btn"> <!-- Reused existing cancel-btn from debt.css -->
+                Close
+            </button>
+        </div>
+    </div>

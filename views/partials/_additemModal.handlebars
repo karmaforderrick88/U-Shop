@@ -1,0 +1,24 @@
+<div id="add-item-modal" class="modal">
+    <div class="modal-content">
+      <h2>Add New Stock Item</h2>
+      <div id="stock-message-container" class="message-container"></div>
+      <form id="add-item-form" method="POST" action="/api/stocks">
+        <label for="new-item-name">Item Name</label>
+        <input type="text" id="new-item-name" required>
+        
+        <label for="new-item-qty">Quantity</label>
+        <input type="number" id="new-item-qty" min="0" value="0" required>
+
+        <label for="new-item-cost">Cost Price</label>
+        <input type="number" id="new-item-cost" min="0"  required>
+
+        <label for="new-item-price">Selling Price</label>
+        <input type="number" id="new-item-price" min="0"  required>
+        
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" id="stock-cancel">Cancel</button>
+          <button type="submit" class="save-btn" id="stock-save-btn">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>

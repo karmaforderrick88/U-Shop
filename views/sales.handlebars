@@ -1,0 +1,134 @@
+<div class="sales-nav-container">
+    <button id="sales-menu-toggle" class="sales-menu-toggle">
+        <i class="fas fa-bars"></i> <!-- Font Awesome hamburger icon -->
+    </button>
+    <nav class="sales-nav">
+        <ul>
+            <li style="font-size: 20px;"><a href="#history" class="sales-nav-link">History</a></li>
+            <li style="font-size: 20px;"><a href="#debt" class="sales-nav-link">Debts</a></li>
+            <li style="font-size: 20px;"><a href="#summary" class="sales-nav-link">Summary</a></li>
+        </ul>
+    </nav>
+</div>
+
+           <!--HISTORY PAGE-->
+<div class="tab-contents active-tab" id="history">
+    <section id="history">
+        <h2 class="sales-title">Sales History</h2>
+<div id="filters">
+        {{>_salesFilterForm}}
+</div>
+        <div id="filters-info">
+            <h1 style="font-size: 20px;">Color codes: Mode of Payment</h1>
+            <div>
+                <span class="label cash">Cash</span>
+                <span class="label mobile">Mobile Money</span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="table-responsive">
+                <table id="salesTable">
+                    <thead>
+                        <tr>
+                            <th>date</th>
+                            <th>Items Sold</th>
+                            <th>Quantity</th>
+                            <th>Price/Item</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesBody">
+                        <!-- Sales rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+  
+    <!--CHECK DEBT PAGE-->
+    <div class="tab-contents" id="debt">
+    <section id="debt">
+        <div class="debt-container">
+            <div id="table-debt">
+        <h1>Check your Debts</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Debt Amount</th>
+                    <th>Date taken</th>
+                    <th>Due date</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody id="debt-data">
+                <!--dynamically filled by js-->
+            </tbody>
+        </table>
+    </div>
+    <button class="btn-debt">Add Debt</button>
+    {{>_clearDebtModal}}
+    </div>
+    
+                  <!--DEBT FORM -->
+  {{>_debtForm}}
+<!--repayment modal-->
+    <div id="repayment-modal" class="modal">
+        {{>_repaymentModal}}
+    </div>
+
+<div id="payment-history-modal" class="modal">
+    {{>_paymentHistory}}
+</div>
+
+    </section>
+</div>
+
+<!--SUMMARY PAGE-->
+<div class="tab-contents" id="summary">
+    <section id="summary">
+        <div class="summary-title">
+            <h2>Sales Summary</h2>
+        </div>
+        <section>
+            <h1>Overview</h1>
+         <div class="summary-item">
+            <div class="summary-label"><span>Best-selling Product:</span></div>
+            <div class="summary-value summary-highlight" id="best-product"></div>
+         </div>
+
+         <div class="summary-item">
+            <div class="summary-label"><span>Monthly Income:</span></div>
+            <div class="summary-value summary-highlight" id="monthly-income"></div>
+         </div>
+
+         <div class="summary-item">
+            <div class="summary-label"><span>Total Debts:</span></div>
+            <div class="summary-value summary-highlight" id="total-debts"></div>
+         </div>
+         
+         <div class="summary-buttons">
+            <button id="refresh-btn"><i class="fa-solid fa-arrows-rotate"></i></button>
+          </div>
+        </section>
+    </section>
+
+<section>
+    <h1>Sales Chart</h1>
+    <div class="chart-controls" style="text-align: center; margin-bottom: 20px;">
+    <label for="chart-time-period-selector" style="font-weight: bold; margin-right: 10px;">Show Sales For:</label>
+    <select id="chart-time-period-selector" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+        <option value="last_6_months">Last 6 Months</option>
+        <option value="last_12_months">Last 12 Months</option>
+        <option value="this_year">This Year</option>
+        <option value="all_time">All Time</option>
+    </select>
+</div>
+    <div class="chart-container">
+    <canvas id="monthlySalesChart"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>
+</section>
+

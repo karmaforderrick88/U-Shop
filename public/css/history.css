@@ -1,0 +1,236 @@
+:root { 
+   
+    --primary: #4361ee;       
+    --primary-hover: #3a56d4; 
+    --secondary: #3a0ca3;    
+    --accent: #f72585;        
+    
+   
+    --bg-light: #f8f9fa;      
+    --card-bg: #ffffff;       
+    --text-primary: #2b2d42;  
+    --text-secondary: #4a4e69;
+    --border-light: #e9ecef;  
+    
+    
+    --success: #4cc9f0;       
+    --warning: #f8961e;     
+    --error: #ef233c;        
+  }
+
+
+  .container{
+    background: white;
+    border: 1.5px solid antiquewhite;
+    padding: 16px;
+    border-radius: 10px;    
+}
+.sales-title{
+    margin: 0;
+    font-size: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.sales-title:hover{
+    color:#3a56d4;
+}
+#salesTable{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+
+}
+#salesTable th, #salesTable td{
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+
+}
+#salesTable th{
+    background-color: #4361ee;
+    cursor: pointer;
+    color: white;
+}
+#filters {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+#filters fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+#filters legend {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2b2d42;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #4361ee;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#filters label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #4a4e69;
+}
+
+#filters input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#filters input:focus {
+  outline: none;
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+
+.sales-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+#filter {
+  background: #4361ee;
+  color: white;
+}
+
+#filter:hover {
+  background: #3a56d4;
+}
+
+#cancelfilters {
+  background: #6b7280;
+  color: white;
+}
+
+#cancelfilters:hover {
+  background: #4b5563;
+}
+.sales-btn:hover{
+    background-color: #0e7bf0;
+    transform: translateY(-2px);
+}
+
+.label{
+    font-size: 14px;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin: 4px 2px;
+}
+.cash {
+    background-color: #12e623; 
+}
+.mobile{
+    background-color:#0c83e4ab; 
+}
+.table{
+    background: #f2f2f2;
+    overflow-x: auto; /* This is the key change to allow horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Adds smooth scrolling on iOS devices */
+}
+
+
+@media (max-width: 768px) {
+    .sales-title {
+      font-size: 20px;
+    }
+  
+    #salesTable {
+      font-size: 12px;
+      width:100%;
+      min-width: 450px;
+    }
+  
+    #salesTable th,
+    #salesTable td {
+      padding: 6px;
+      font-size: 10px;
+    }
+  
+    .label {
+      font-size: 13px;
+      padding: 4px 8px;
+    }
+
+    #filters {
+      padding: 16px;
+      margin: 15px 0;
+  }
+  
+  #filters legend {
+      font-size: 14px;
+      margin-bottom: 12px;
+  }
+  
+  .filter-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+  }
+  
+  .filter-item {
+      gap: 4px;
+  }
+  
+  #filters label {
+      font-size: 13px;
+  }
+  
+  #filters input {
+      padding: 8px 10px;
+      font-size: 13px;
+  }
+  
+  .filter-actions {
+      flex-direction: column;
+      gap: 8px;
+  }
+  
+  
+    .sales-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+  }   
+}

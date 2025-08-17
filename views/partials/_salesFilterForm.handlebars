@@ -1,0 +1,25 @@
+<fieldset>
+<legend>Filter Sales Data</legend>
+        
+        <div class="filter-grid">
+            <div class="filter-item">
+                <label for="startDate">From Date:</label>
+                <input type="date" id="startDate">
+            </div>
+            
+            <div class="filter-item">
+                <label for="endDate">To Date:</label>
+                <input type="date" id="endDate">
+            </div>
+            
+            <div class="filter-item">
+                <label for="itemFilter">Item Name:</label>
+                <input type="text" id="itemFilter" placeholder="e.g. curtains">
+            </div>
+        </div>
+        
+        <div class="filter-actions">
+            <button class="sales-btn" onclick="applyFilters()" id="filter">Filter</button>
+            <button class="sales-btn" onclick="resetFilters()" id="cancelfilters">Cancel</button>
+        </div>
+    </fieldset>

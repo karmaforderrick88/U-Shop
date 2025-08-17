@@ -1,0 +1,247 @@
+/* Desktop Sales Navigation */
+@media (min-width: 769px) {
+    .sales-nav {
+        display: block; /* Override flex for desktop */
+        border-bottom: 1px solid #e9ecef; /* Light border for the container */
+        padding: 0;
+        margin-bottom: 25px; /* Space between nav and content */
+    }
+
+    .sales-nav ul {
+        display: flex;
+        flex-direction: row; /* Horizontal layout */
+        justify-content: flex-start; /* Align to the left */
+        padding: 0;
+        margin: 0;
+        gap: 20px; /* Space between nav items */
+    }
+
+    /* Reset the boxy mobile styles for desktop */
+    .sales-nav ul li {
+        list-style: none;
+        border: none;
+        border-radius: 0;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+    }
+
+    /* Style for the link itself */
+    .sales-nav-link {
+        display: inline-block;
+        padding: 12px 4px; /* Vertical padding, minimal horizontal */
+        margin: 0;
+        font-size: 16px; /* A more appropriate desktop font size */
+        font-weight: 600;
+        color: var(--text-secondary); /* Default text color from your theme */
+        text-decoration: none;
+        position: relative;
+        border-bottom: 3px solid transparent; /* Placeholder for active state */
+        transform: translateY(1px); /* Aligns with the container border */
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .sales-nav-link:hover {
+        color: var(--primary); /* Hover color */
+    }
+
+    /* The active state styling */
+    .sales-nav ul li.active .sales-nav-link {
+        color: var(--primary);
+        border-bottom-color: var(--primary); /* The blue underline for the active tab */
+    }
+}
+
+/* Hide the hamburger button on desktop screens by default */
+.sales-menu-toggle {
+    display: none;
+}
+
+#history,
+#debt,
+#summary{
+  background-color: #fff;
+  width: 95%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px ;
+  box-sizing: border;
+}
+
+.tab-contents{
+  display: none;
+  border:none;
+}
+.tab-contents.active-tab{
+  display: block;
+  border: none;
+}
+.rows{
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  width: auto;
+}
+
+/* On mobile screens (max-width: 768px) */
+@media (max-width: 768px) {
+    /* Show the hamburger button on mobile and position it top-right */
+    .sales-menu-toggle {
+        display: block;
+        position: fixed;
+        top: 60px; /* Aligned with the header's potential height, or adjust as needed */
+        right: 0;
+        z-index: 1004; /* Highest z-index to ensure it's always visible and clickable */
+        background-color: transparent;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        color: var(--text-primary); /* Or white if it overlaps a dark background */
+        font-size: 24px;
+    }
+
+   /* Sales Navigation Menu (Mobile - when hidden) */
+    .sales-nav {
+        position: fixed;
+        top: 60px;
+        right: -300px; /* Still off-screen initially */
+        width: auto; /* Changed to auto so it shrinks to content width */
+        height: auto;
+        max-height: calc(100vh - 60px);
+        background-color: white;
+        z-index: 1004;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+        transition: right 2.0s ease-out;
+        border-radius: 8px 0 0 8px;
+        white-space: nowrap;
+        overflow-x: auto;
+        max-width: calc(100% - 60px);
+        display: none; /* **NEW: Hide it completely when closed** */
+        margin-top: 5px;
+        /* Corrected transition properties */
+        pointer-events: none;
+        visibility: hidden; /* Hidden when closed */
+        opacity: 0; /* Fully transparent when closed */
+        transition: right 1.3s ease-out, opacity 1.3s ease-out, visibility 0s 0.3s; /* Transition right/opacity, then hide visibility after transition */
+    }
+    /* Sales Navigation Menu (Mobile - when open) */
+    .sales-nav.open {
+        pointer-events: auto;
+        right: 40px;
+        display: flex;
+       visibility: visible; /* Visible when open */
+        opacity: 1; /* Fully opaque when open */
+        transition: right 1.3s ease-out, opacity 1.3s ease-out, visibility 0s 0s; /* Transition right/opacity, then show visibility immediately */
+    }
+
+    /* Adjust the sales-nav-container */
+    .sales-nav-container {
+        position: relative;
+        height: auto;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* Styles for the actual list items within the sliding menu */
+    .sales-nav ul {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        justify-content: flex-end;
+        align-items: center;
+        width: auto;
+    }
+
+    .sales-nav ul li {
+        flex-shrink: 0;
+        height: auto;
+        margin: 0 5px;
+        font-size: 16px;
+        text-align: center;
+        border: none;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .sales-nav ul li a {
+        display: block;
+        padding: 8px 12px;
+        font-size: 16px;
+        color:black;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color 0.2s ease;
+    }
+
+    .sales-nav ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: rgb(192, 23, 169);
+    }
+
+    /* For mobile, these sections should take full width and center themselves */
+    #history,
+    #debt,
+    #summary {
+        width: 100%;
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    .rows {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+  .sales-nav {
+    right: -250px;
+    max-width: calc(100% - 50px);
+  }
+
+  .sales-nav.open {
+    right: 30px;
+  }
+
+  .sales-nav ul li {
+    font-size: 14px;
+  }
+
+  .sales-nav ul li a {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+}
+
+/* Responsive table container */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 600px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+  .table-responsive table {
+    font-size: 13px;
+    min-width: 500px;
+  }
+  .table-responsive th, .table-responsive td {
+    padding: 6px 4px;
+  }
+}

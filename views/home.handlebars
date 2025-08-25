@@ -1,12 +1,10 @@
 <section id="stats" class="card">
     <h2>Today's Summary</h2>
     <p class="card" id="total-sales" style="font-size: 2rem;">Total Sales: --</p><br>
-    <p class="card">Pending Deliveries: --</p>
 </section>
 <h2>Quick Actions</h2>
 <section id="actions" class="card">
     <button id="add-sale-btn">Add Sale</button>
-    <button>View Deliveries</button>
     {{#if (or (eq user.role "admin") (eq user.role "owner"))}}
       <button class="quick-action-btn create-user-btn" >
         <a href="/users" class="center-link"><i class="fa-solid fa-user"></i>  CREATE NEW USER</a>

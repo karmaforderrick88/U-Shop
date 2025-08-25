@@ -1,4 +1,4 @@
-// Frontend Logger - Simple and automatic
+
 class FrontendLogger {
     constructor() {
       // Automatically detect if we're in development

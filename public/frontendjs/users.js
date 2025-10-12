@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (res.ok) {
         messageDiv.textContent = result.message || 'User created!';
         messageDiv.classList.add('alert-success');
-        logger.apiCall('POST', '/api/users', true);
+        //logger.apiCall('POST', '/api/users', true);
         form.reset();
         setTimeout(()=>{
           window.location.href ="/"},2000 //redirect to home page

@@ -13,6 +13,7 @@ export const createUser = async (req, res) => {
         }
         const user = await userModel.addUser({ username, password, role, name });
         res.status(201).json({ message: 'User created successfully.', user });
+        
     } catch (err) {
         logger.error('Error creating user:', err);
         res.status(500).json({ error: 'Internal server error.' });

@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
         messageDiv.classList.add('alert-success');
         logger.apiCall('POST', '/api/users', true);
         form.reset();
+        setTimeout(()=>{
+          window.location.href ="/"},2000 //redirect to home page
+        )
       } else {
         // Check if it's an access denied error (403)
         if (res.status === 403) {

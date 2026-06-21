@@ -1,26 +1,29 @@
- 
- <main>
- <section id="stock-controls">
-            <button id="add-stock-btn">+ Add Item
-            </button>
-            <input type="text" id="search-stock" placeholder="Search stock...">
-        </section>
-        <!-- Add Item Modal -->
-{{> _additemModal}}
+{{#section 'css'}}
+    <link rel="stylesheet" href="/css/stocks.css">
+{{/section}}
+<main>
+    <section id="stock-controls">
+        <button id="add-stock-btn" class="tactile-btn" title="Change table view">+ Add Item</button>
+        <input type="text" id="search-stock" placeholder="Search stock...">
+        <button type="button" id="view-toggle-btn" class="action-btn tactile-btn" style="background: var(--secondary); color: white;">
+  <i class="fa-solid fa-grip"></i> </button>
+    </section>
+    
+    <!-- Add Item Modal -->
+    {{> _additemModal}}
 
-
-
-        <div id="stock-summary">
-            <div class="summary-card">
-                <h3>Total Items</h3>
-                <p><span id="total-items"></span></p></p>
-            </div>
-            <div class="summary-card low-stock">
-                <h3>Low Stock (&lt;5) </h3>
-                <p id="low-stock-count"></p>
-            </div>
+    <div id="stock-summary">
+        <div class="summary-card">
+            <h3>Total Items</h3>
+            <p><span id="total-items"></span></p>
         </div>
-        <div class="table-responsive">
+        <div class="summary-card low-stock">
+            <h3>Low Stock (&lt;5) </h3>
+            <p id="low-stock-count"></p>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
         <table id="stock-table">
             <thead>
                 <tr>
@@ -33,9 +36,19 @@
             </thead>
             <tbody><!-- Filled by JS --></tbody>
         </table>
+        
+        <!-- Delete Stock Confirmation Modal -->
         {{> _deleteStockModal}}
     </div>
     
     <!-- Access Denied Modal -->
-{{>_accessDenied}}
- </main>
+    {{>_accessDenied}}
+</main>
+
+{{#section 'scripts'}}
+    <!-- 
+        This script is only loaded when the user is on the Stocks page. 
+        It isolates all stock-related API calls and DOM manipulation.
+    -->
+    <script type="module" src="/frontendjs/stocks.js"></script>
+{{/section}}

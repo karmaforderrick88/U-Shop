@@ -62,51 +62,6 @@
     justify-content: center;
     z-index: 1005;
 }
-.form-actions {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 20px; 
-    margin-top: 12px;
-}
-.save-btn, .cancel-btn {
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        border: none;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
-        transition: all 0.3s ease;
-        background-color:  #4361ee;
-        color: white;
-     }
-    .save-btn:hover, .cancel-btn:hover {
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        transform: translateY(-1px); 
-    }
-    .cancel-btn {
-        box-shadow: 0 2px 5px rgba(43, 45, 66, 0.3);
-        background-color:#0816a7;
-        color:white;
-    }#repayment-form-cancel,#submit-repayment-btn{
-     padding: 10px;
-        border-radius: 6px;
-        font-size: 16px; 
-        cursor: pointer;
-        border: none;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
-        transition: all 0.3s ease; 
-        background-color:#2b2d42;
-        color:white;
-        
-}
-#repayment-form-cancel:hover,#submit-repayment-btn:hover{
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
-        transform: translateY(-1px);
-}
-#repayment-form-cancel:active,#submit-repayment-btn:active{
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2); 
-    transform: translateY(0);
-}
 .modal {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
@@ -136,7 +91,7 @@
     .modal-buttons{
       display: flex;
       flex-direction: row;
-      gap: 120px;
+      justify-content: space-between;
     }
 
     @keyframes animatemodal {
@@ -253,8 +208,7 @@
 /* Modal Buttons Group (for Close button) */
 .modal-buttons-group {
     display: flex;
-    justify-content: flex-end; /* Align to the right */
-    gap: 15px; /* Space between buttons */
+    justify-content: center; /* Align to the right */
     margin-top: 20px; /* Space above buttons */
 }
 
@@ -361,48 +315,6 @@
   align-items: center;     /* Center vertically */
   flex-direction: column;
 }
-
-#clear-debt-modal .modal-content {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  min-width: 300px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
-}
-
-#clear-debt-modal .modal-content button {
-  padding: 0.6em 1.5em;
-  margin: 0 0.5em;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-
-#clear-debt-confirm {
-  background: #27ae60;
-  color: #fff;
-}
-#clear-debt-confirm:hover {
-  background: #219150;
-}
-
-#clear-debt-cancel {
-  background: #e0e0e0;
-  color: #333;
-}
-#clear-debt-cancel:hover {
-  background: #bdbdbd;
-  color: #111;
-}
-
-#clear-debt-modal .modal-content button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
 @media (max-width: 768px) {
   
     .modal-content { 
@@ -427,17 +339,6 @@
       word-wrap: break-word;
     }
   
-    .form-actions {
-        display: flex;
-        justify-content: center;
-        gap: 10px; 
-    }
-  
-    .save-btn, .cancel-btn {
-      width: 150px;
-      font-size: 15px;
-      padding: 12px;
-    }
   
     h1 {
       font-size: 22px;

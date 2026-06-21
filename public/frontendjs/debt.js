@@ -32,7 +32,7 @@ const displayDebtMessage = (message, type) => {
     // Automatically hide the message after 5 seconds
     setTimeout(() => {
         $debtMessageContainer.css({ 'opacity': 0, 'transform': 'translateY(-10px)' });
-        // Clear message text after fade out to ensure it's truly gone
+        // Clear message text after fade out 
         setTimeout(() => {
             $debtMessageContainer.text('');
         }, 300); // Wait for transition to complete before clearing text
@@ -90,7 +90,7 @@ if (Array.isArray(data) && data.length > 0){
 });
 }
 else{
-    tbody.innerHTML=`<tr><td colspan="5" style="text-align:center; padding:20px;">no debt records found💔</td></tr>`
+    tbody.innerHTML=`<tr><td colspan="5" style="text-align:center; padding:20px;">no debt records found🥀</td></tr>`
 }
 
 }
@@ -197,11 +197,11 @@ $(document).ready(function () {
         };
 
         if (!debtData.customer || debtData.customer === '') {
-            displayDebtMessage('uumm you forgot the customer name🤔','error')
+            displayDebtMessage('uumm you forgot the customer name','error')
             return;
         }
         if(isNaN(debtData.amount) || debtData.amount<0){
-            displayDebtMessage("you sure about that amount🤔😅","error");
+            displayDebtMessage("you sure about that amount","error");
             return;
         }
         if(!debtData.dueDate || debtData.dueDate === ""){
@@ -216,7 +216,7 @@ $(document).ready(function () {
          const taken = new Date(debtData.dateTaken);
 
          if(dateDue < taken){
-            displayDebtMessage("There seems to be a time discrepancy😆","error");
+            displayDebtMessage("There seems to be a time discrepancy","error");
             return;
          }
         logger.log('debt.js: debt data prepared for submission:', debtData);
@@ -230,7 +230,7 @@ $(document).ready(function () {
 
             const result = await response.json();
             if (response.ok) {
-                displayDebtMessage('debt recorded successfully!🎉', 'success');
+                displayDebtMessage('debt recorded successfully!', 'success');
                 logger.log('debt.js: debt recorded successfully:', result);
                 logger.apiCall('POST', '/api/debts', true);
 
@@ -253,7 +253,7 @@ $(document).ready(function () {
         
 
          catch(err) {
-            displayDebtMessage('Network error or unexpected response��❓. Please try again��.', 'error');
+            displayDebtMessage('Network error or unexpected response. Please try again.', 'error');
       logger.error('debt.js: Error recording the new debt:', err);
         }
     
@@ -325,7 +325,7 @@ $(document).ready(function () {
             const result = await response.json();
 
             if (response.ok) {
-                displayRepaymentMessage('Repayment recorded successfully! 🎉', 'success');
+                displayRepaymentMessage('Repayment recorded successfully! ', 'success');
                 logger.log('debt.js: repayment recorded successfully:', result);
                 logger.apiCall('PATCH', `/api/debts/${debtId}/repayment`, true);
 
@@ -400,7 +400,7 @@ $(document).ready(function () {
             });
 
             if (response.ok) {
-                displayDebtMessage('Debt successfully cleared! 🎉', 'success');
+                displayDebtMessage('Debt successfully cleared! ', 'success');
                 logger.apiCall('DELETE', `/api/debts/${debtId}`, true);
                 await fetchAndRenderDebts();
             } else {
@@ -415,4 +415,25 @@ $(document).ready(function () {
             $clearDebtId.val('');
         }
     });
-});
+;// 1. Load the audio file into memory
+  const clickSound = new Audio('path/to/your/click-sound.mp3');
+  
+  // 2. Set the volume (tactile sounds should be subtle, around 20-50%)
+  clickSound.volume = 0.3; 
+
+  // 3. Grab all the buttons you want to make tactile
+  const tactileButtons = document.querySelectorAll('.tactile-btn');
+
+  // 4. Attach the sound to the click event
+  tactileButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Reset the audio to the beginning in case of rapid, repeated clicks
+      clickSound.currentTime = 0; 
+      clickSound.play().catch(error => {
+          // Browsers sometimes block audio if the user hasn't interacted with the page yet.
+          // This catch block prevents errors from showing in your console.
+          console.log("Audio play prevented by browser policy.");
+      });
+    });
+  });
+})

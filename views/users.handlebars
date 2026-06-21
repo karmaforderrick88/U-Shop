@@ -1,68 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Management</title>
-  <link rel="stylesheet" href="/css/users.css">
-   <script src="https://kit.fontawesome.com/4822a6e79c.js" crossorigin="anonymous"></script>
-   <script src="/frontendjs/logger.js"></script>
+  <title>{{pageTitle}}</title>
+  <link rel="stylesheet" href="/css/register.css"> 
+  <script src="https://kit.fontawesome.com/4822a6e79c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container mt-4">
-    <h2>User Management</h2>
-    <form id="createUserForm" class="mb-4" action="/api/users">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control" id="username" name="username" required>
+  <h1 class="register-title">LEAH'S HOME DECORS</h1>
+  <div class="register-container">
+    <h2>Create Account</h2>
+
+    {{#if error}}
+    <div class="error" style="color: red; margin-bottom: 10px;">{{error}}</div>
+    {{/if}}
+
+    <!-- 
+      FIX: Ensure the action matches your route mounting. 
+      If your routes are mounted at app.use('/admin', userRoutes), change this to "/admin/users".
+      If they are at the root, "/users" is fine, but "users" (relative) is often safer.
+    -->
+    <form method="POST" action="/api/users">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter full name" required>
       </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="password" required>
-        <span class="password-toggle" id="password-toggle">
-          <i class="fa-solid fa-eye"></i>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="email@example.com" required>
       </div>
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" required>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Choose a username" required>
       </div>
-      <div class="mb-3">
-        <label for="role" class="form-label">Role</label>
-        <select class="form-select" id="role" name="role" required>
-          <option value="employee">Employee</option>
-          <option value="admin">Admin</option>
-          <option value="owner">Owner</option>
-        </select>
+
+      <input type="hidden" id="role" name="role" value="employee">
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper" style="display: flex; align-items: center;"> 
+          <input type="password" id="password" name="password" placeholder="Create password" required style="flex-grow: 1;">
+          <button class="toggle-button tactile-btn" type="button" id="password-toggle" style="margin-left: -40px; background: none; border: none; cursor: pointer;">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Create User</button>
+
+  <div class="form-group" style="margin-top: 20px;">
+        <button class="register-btn tactile-btn" type="submit">Create Employee</button>
+      </div>    
     </form>
-    <div id="userMessage" class="alert d-none" role="alert"></div>
   </div>
-  <script src="/frontendjs/users.js"></script>
+
   <script>
-    document.addEventListener('DOMContentLoaded',function(){
-      const passwordInput = document.getElementById('password');
-      const passwordToggle = document.getElementById('password-toggle');
-       if (passwordInput && passwordToggle) {
-            passwordToggle.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                const icon = this.querySelector('i'); 
-                if (icon.classList.contains('fa-eye'))
-                 {
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash'); 
-                }
-                else {
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye'); // Show "eye" icon when password is hidden
-                     }
-            });
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        const setupToggle = (inputId, toggleId) => {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+            if (input && toggle) {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isPassword = input.getAttribute('type') === 'password';
+                    input.setAttribute('type', isPassword ? 'text' : 'password');
+                    const icon = this.querySelector('i');
+                    if (isPassword) {
+                        icon.classList.replace('fa-eye', 'fa-eye-slash');
+                    } else {
+                        icon.classList.replace('fa-eye-slash', 'fa-eye');
+                    }
+                });
+            }
+        };
+
+        setupToggle('password', 'password-toggle');
     });
   </script>
-  
-  <!-- Access Denied Modal -->
-  {{>_accessDenied}}
 </body>
 </html>

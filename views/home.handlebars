@@ -1,12 +1,18 @@
+{{#section 'css'}}
+     <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/mobile.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="/css/desktop.css" media="screen and (min-width: 769px)">
+{{/section}}
 <section id="stats" class="card">
-    <h2>Today's Summary</h2>
-    <p class="card" id="total-sales" style="font-size: 2rem;">Total Sales: --</p><br>
+    <h2>Today's Summary</h2><br><br>
+    <p class="card" id="total-sales" style="font-size: 1.6rem;">Total Sales: Loading...</p><br>
 </section>
+
 <h2>Quick Actions</h2>
 <section id="actions" class="card">
-    <button id="add-sale-btn">Add Sale</button>
+    <button id="add-sale-btn" class="tactile-btn">Add Sale</button>
     {{#if (or (eq user.role "admin") (eq user.role "owner"))}}
-      <button class="quick-action-btn create-user-btn" >
+      <button class="quick-action-btn create-user-btn tactile-btn" >
         <a href="/users" class="center-link"><i class="fa-solid fa-user"></i>  CREATE NEW USER</a>
       </button>
     {{/if}}
@@ -14,6 +20,6 @@
 
 {{> _addSaleModal}}
 
-
-
-
+{{#section 'scripts'}}
+    <script type="module" src="/frontendjs/homepage.js"></script>
+{{/section}}

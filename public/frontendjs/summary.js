@@ -1,7 +1,7 @@
-// Chart.js chart instance for monthly sales
+
 let monthlySalesChart = null;
 
-// Function to fetch sales data and render the monthly sales chart
+//  fetch sales data and render the monthly sales chart
 async function fetchAndRenderMonthlySalesChart(timePeriod = 'last_6_months') {
     try {
         // Fetch sales data from the backend API
@@ -216,9 +216,9 @@ async function fetchAndDisplaySummary() {
         const data = await res.json();
         logger.apiCall('GET', '/api/sales/summary', true);
 
-        document.getElementById('best-product').textContent = `Best-selling Product: ${data.bestSellingProduct ?? '--'}`;
-        document.getElementById('monthly-income').textContent = `Monthly Income: KSh ${data.monthlyIncome?.toLocaleString() ?? '--'}`;
-        document.getElementById('total-debts').textContent = `Total Debts: KSh ${data.totalDebts?.toLocaleString() ?? '--'}`;
+        document.getElementById('best-product').textContent = `${data.bestSellingProduct ?? '--'}`;
+        document.getElementById('monthly-income').textContent = `Ksh ${data.monthlyIncome?.toLocaleString() ?? '--'}`;
+        document.getElementById('total-debts').textContent = `KSh ${data.totalDebts?.toLocaleString() ?? '--'}`;
     } catch (err) {
         logger.error('Error fetching summary:', err);
         logger.apiCall('GET', '/api/sales/summary', false);

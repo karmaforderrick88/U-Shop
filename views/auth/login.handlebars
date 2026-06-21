@@ -3,7 +3,7 @@
 <head>
   <title>{{pageTitle}}</title>
   <link rel="stylesheet" href="/css/login.css">
-  <!-- NEW: Link to Font Awesome for the eye icons -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <script src="https://kit.fontawesome.com/4822a6e79c.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -20,39 +20,44 @@
       <label for="password">Password:</label>
       <div class="password-input-wrapper"> 
         <input type="password" id="password" name="password" required><br><br>
-        <button class="toggle-button">
-        <span class="password-toggle" id="password-toggle">
+        <button class="toggle-button tactile-btn" type="button" id="password-toggle" >
           <i class="fa-solid fa-eye"></i>
-        </span>
         </button>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="tactile-btn">Login</button>
+       <span>
+        Don't have an account?<a href="/register">Register</a>
+      </span>
+      <span><a href="/forgot-password">Forgot Password?</a></span>
     </form>
   </div>
 
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const passwordInput = document.getElementById('password');
-        const passwordToggle = document.getElementById('password-toggle');
+    const passwordInput = document.getElementById('password');
+    const passwordToggle = document.getElementById('password-toggle');
 
-        if (passwordInput && passwordToggle) {
-            passwordToggle.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                const icon = this.querySelector('i'); 
-                if (icon.classList.contains('fa-eye'))
-                 {
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash'); 
-                }
-                else {
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye'); // Show "eye" icon when password is hidden
-                     }
-            });
-        }
-    });
+    if (passwordInput && passwordToggle) {
+        passwordToggle.addEventListener('click', function(e) {
+            // 1. Crucial: Prevent form submission and mobile "ghost" clicks
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 2. Toggle the input type
+            const isPassword = passwordInput.getAttribute('type') === 'password';//boolean
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            
+            // 3. Find the icon inside the button and swap classes
+            const icon = this.querySelector('i'); 
+            if (isPassword) {
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    }
+});
   </script>
 </body>
 </html>

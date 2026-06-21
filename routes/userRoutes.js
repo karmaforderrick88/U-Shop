@@ -1,9 +1,14 @@
 import express from 'express';
-import { createUser } from '../controllers/userController.js';
+import { createEmpUser } from '../controllers/userController.js';
+import { ensureAuthenticated, ensureAdminOrOwner } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Create new user
-router.post('/users', createUser);
+/**
+ * Restricted User Creation
+ * Only an authenticated Admin or Owner should be able to create new users 
+ * via the internal management system.
+ */
+router.post('/users', ensureAuthenticated, ensureAdminOrOwner, createEmpUser);
 
-export default router; 
+export default router;

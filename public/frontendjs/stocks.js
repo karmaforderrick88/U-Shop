@@ -21,6 +21,7 @@ $(document).ready(function() {
     const $stockMessageContainer = $('#stock-message-container');
     const $accessDeniedModal = $('#access-denied-modal');
     const $accessDeniedMessage = $('#access-denied-message');
+    const $stockSaveBtn = $('#stock-save-btn'); 
     
 
     let currentEditItemId = null; // Stores the Firestore string ID when editing
@@ -36,8 +37,7 @@ $(document).ready(function() {
                         <td>${item.name}</td>
                         <td>${item.quantity}</td>
                         <td>${item.price.toFixed(2)}</td>
-                        <td>${item.costPrice ? item.costPrice.toFixed(2) : 'N/A'}</td> <!-- Handle undefined costPrice -->
-                        <td>
+                        <td>${item.costPrice ? item.costPrice.toFixed(2) : 'N/A'}</td> <td>
                             <button class="edit-item-btn edit-button">Edit</button>
                             <button class="delete-item-btn delete-button">Delete</button>
 
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 const errorText = await response.text();
                 //  Handle 403 specifically  for GET requests to stocks
                 if (response.status === 403) {
-                    showAccessDeniedModal(errorText || 'Access Denied: You do not have permission to view stocks😒.');
+                    showAccessDeniedModal(errorText || 'Access Denied: You do not have permission to view stocks.');
                     $stockTableBody.empty(); 
                     $stockTableBody.append('<tr><td colspan="5" class="text-center text-red-500">Access Denied: Cannot load stock data.</td></tr>');
                     $totalItemsSpan.text('N/A');
@@ -131,6 +131,11 @@ $(document).ready(function() {
         $itemModal.css('display', 'flex');
       
         $stockMessageContainer.removeClass('success error').text('').css({ 'opacity': 0, 'transform': 'translateY(-10px)' });
+
+        // Resets
+        $('#image-preview').attr('src', '').css('display', 'none');
+        $('#upload-placeholder-text').css('display', 'block');
+        $stockSaveBtn.prop('disabled', false).text('Save Item'); 
     });
 
     // --- Edit Button Click Handler ---
@@ -152,7 +157,7 @@ $(document).ready(function() {
 
             if (itemToEdit) {
                 logger.log('stocks.js: Found item to edit:', itemToEdit);
-                currentEditItemId = itemId; // Store the Firestore string ID for editing
+                currentEditItemId = itemId; 
                 $modalTitle.text('Edit Stock Item');
 
                 // Populate the form fields
@@ -165,6 +170,11 @@ $(document).ready(function() {
                 $itemModal.css('display', 'flex');
                 
                 $stockMessageContainer.removeClass('success error').text('').css({ 'opacity': 0, 'transform': 'translateY(-10px)' });
+                
+                // Resets
+                $('#image-preview').attr('src', '').css('display', 'none');
+                $('#upload-placeholder-text').css('display', 'block');
+                $stockSaveBtn.prop('disabled', false).text('Save Item'); 
             } else {
                 logger.error('stocks.js: Item not found in fetched data for ID:', itemId);
             }
@@ -174,18 +184,30 @@ $(document).ready(function() {
         }
     });
 
-    
-  
         // --- delete Button Click Handler ---
         $stockTableBody.on('click', '.delete-item-btn', function() {
             const itemId = $(this).closest('tr').data('item-id');
             itemIdToDelete = itemId;
             $('#delete-confirm-modal').show();
         });
-        $('#confirm-delete-btn').on('click', function() {
+        
+        // --- NEW: Async locking logic for the confirm delete button ---
+        $('#confirm-delete-btn').on('click', async function() {
             if (itemIdToDelete) {
-                deleteStockItem(itemIdToDelete);
+                const $btn = $(this);
+                const originalText = $btn.text(); 
+                
+                // Lock the button and show spinner
+                $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Deleting...');
+                
+                // Wait for the server to actually process the deletion
+                await deleteStockItem(itemIdToDelete);
+                
+                // Unlock the button 
+                $btn.prop('disabled', false).text(originalText);
             }
+            
+            // Only hide the modal AFTER the deletion is complete
             $('#delete-confirm-modal').hide();
             itemIdToDelete = null;
         });
@@ -228,7 +250,7 @@ $(document).ready(function() {
                     await window.fetchAndRenderStocks();
                     displayStockMessage('Item deleted successfully!', 'success');
                 } else {
-                    // NEW: Separate handling for 403 regardless of JSON parsing success
+                    //  Separate handling for 403 regardless of JSON parsing success
                     if (response.status === 403) {
                         let accessDeniedMsg = 'Access Denied: You do not have permission to delete stock items.';
                         try {
@@ -270,6 +292,11 @@ $(document).ready(function() {
         $itemIdInput.prop('readonly', false); // Reset readonly for future Add operations
         // Clear message container when closing modal
         $stockMessageContainer.removeClass('success error').text('').css({ 'opacity': 0, 'transform': 'translateY(-10px)' });
+
+        // Resets
+        $('#image-preview').attr('src', '').css('display', 'none');
+        $('#upload-placeholder-text').css('display', 'block');
+        $stockSaveBtn.prop('disabled', false).text('Save Item'); 
     });
 
     // --- Form Submission Handler (Add/Edit) ---
@@ -281,7 +308,7 @@ $(document).ready(function() {
             name: $itemNameInput.val().trim(),
             quantity: parseInt($itemQtyInput.val()) || 0,
             price: parseFloat($itemPriceInput.val()) || 0,
-            costPrice: parseFloat($itemCostInput.val()) || 0 // Ensure costPrice is sent
+            costPrice: parseFloat($itemCostInput.val()) || 0 
         };
 
         // Client-side validation
@@ -302,14 +329,29 @@ $(document).ready(function() {
             return;
         }
 
+        // --- NEW: Lock the button and show the spinner ---
+        $stockSaveBtn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Saving...');
+
+        // Convert data to FormData to support the image file
+        const formData = new FormData();
+        formData.append('name', itemData.name);
+        formData.append('quantity', itemData.quantity);
+        formData.append('price', itemData.price);
+        formData.append('costPrice', itemData.costPrice);
+
+        // Safely grab the file from your input
+        const imageFile = $itemForm.find('input[type="file"]')[0]?.files[0];
+        if (imageFile) {
+            formData.append('productImage', imageFile);
+        }
 
         let apiMethod = 'POST';
         let apiUrl = '/api/stocks';
         let successMessage = 'Item added successfully!';
 
-        if (currentEditItemId !== null) { // If we have an ID stored, it's an edit
+        if (currentEditItemId !== null) { 
             apiMethod = 'PUT';
-            apiUrl = `/api/stocks/${currentEditItemId}`; // currentEditItemId should be the Firestore string ID
+            apiUrl = `/api/stocks/${currentEditItemId}`;
             successMessage = 'Item updated successfully!';
             logger.log('stocks.js: Edit mode detected. API URL:', apiUrl);
         } else {
@@ -321,31 +363,31 @@ $(document).ready(function() {
         try {
             const response = await fetch(apiUrl, {
                 method: apiMethod,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(itemData)
+                body: formData 
             });
 
             if (!response.ok) {
-                // NEW: Separate handling for 403 regardless of JSON parsing success
+                // If it fails, unlock the button so they can try again
+                $stockSaveBtn.prop('disabled', false).text('Save Item'); 
+
                 if (response.status === 403) {
                     let accessDeniedMsg = 'Access Denied: You do not have permission to add/edit stock items.';
                     try {
                         const errorData = await response.json();
                         accessDeniedMsg = errorData.message || accessDeniedMsg;
                     } catch (parseError) {
-                        logger.warn('stocks.js: Could not parse 403 error response as JSON, using default message.');
+                        logger.warn('stocks.js: Could not parse 403 error.');
                     }
                     showAccessDeniedModal(accessDeniedMsg);
-                    return; // Stop execution after showing modal
+                    return; 
                 }
 
-                // Original error handling for other non-2xx statuses
                 let errorMessage = 'Failed to save item. Please try again.';
                 try {
                     const errorData = await response.json();
                     errorMessage = errorData.message || errorMessage;
                 } catch (parseError) {
-                    logger.error('stocks.js: Could not parse error response as JSON:', parseError);
+                    logger.error('stocks.js: Could not parse error response.');
                     errorMessage = `Server error: ${response.status} ${response.statusText}`;
                 }
                 logger.apiCall(apiMethod, apiUrl, false);
@@ -360,14 +402,23 @@ $(document).ready(function() {
 
             await fetchAndRenderStocks();
 
+            // Resets before closing the modal
+            $('#image-preview').attr('src', '').css('display', 'none');
+            $('#upload-placeholder-text').css('display', 'block');
+            
+            // Unlock the button just before hiding the modal
+            $stockSaveBtn.prop('disabled', false).text('Save Item');
+
             setTimeout(() => {
                 $itemModal.css('display', 'none');
-            }, 2000);
+            }, 300);
             
             $itemForm[0].reset();
             currentEditItemId = null;
-            $itemIdInput.prop('readonly', false); // Reset readonly for future Add operations
+            $itemIdInput.prop('readonly', false); 
         } catch (error) {
+            // Unlock the button on a network crash
+            $stockSaveBtn.prop('disabled', false).text('Save Item');
             logger.error('stocks.js: Error submitting item:', error);
             displayStockMessage('Network error. Please try again.', 'error');
         }
@@ -385,6 +436,42 @@ $(document).ready(function() {
 
     // Initial load
     fetchAndRenderStocks();
+logger.log('stocks.js: All functionality initialized.');
 
-    logger.log('stocks.js: All functionality initialized.');
+    // --- Image Preview Logic ---
+    $itemForm.find('input[type="file"]').on('change', function(e) {
+        const file = e.target.files[0];
+        const $preview = $('#image-preview');
+        const $placeholderText = $('#upload-placeholder-text');
+
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            $preview.attr('src', objectUrl).css('display', 'block');
+            $placeholderText.css('display', 'none');
+        } else {
+            $preview.attr('src', '').css('display', 'none');
+            $placeholderText.css('display', 'block');
+        }
+    });
+    
+    // --- View Toggle Logic ---
+    const $table = $('#stock-table'); 
+    const $toggleBtn = $('#view-toggle-btn');
+    const $icon = $toggleBtn.find('i');
+
+    if (window.innerWidth <= 768) {
+        $table.addClass('card-view');
+        $icon.removeClass('fa-grip').addClass('fa-table-list');
+    }
+
+    $toggleBtn.on('click', function() {
+        $table.toggleClass('card-view');
+        
+        if ($table.hasClass('card-view')) {
+            $icon.removeClass('fa-grip').addClass('fa-table-list');
+        } else {
+            $icon.removeClass('fa-table-list').addClass('fa-grip'); 
+        }
+    });
+  
 });

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{pageTitle}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/register.css"> 
+  <link rel="stylesheet" href="/css/base.css">
+  <script src="https://kit.fontawesome.com/4822a6e79c.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+  <h1 class="register-title">LEAH'S HOME DECORS</h1>
+  <div class="register-container">
+    <h2>Register</h2>
+    <div id="auth-message-container" class="message-container"></div>
+
+    <form method="POST" action="/register/request">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="email@example.com" required>
+      </div>
+      <button type="submit" class="register-btn tactile-btn">Send Verification Email</button>
+    </form>
+    <p class="login-link">Already have an account? <a href="/login">Login here</a></p>
+  </div>
+  <script src="/frontendjs/logger.js"></script>
+  <script src="/frontendjs/auth.js"></script>
+</body>
+</html>

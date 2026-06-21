@@ -36,7 +36,7 @@ async function main() {
       role,
       name
     });
-    console.log(`Owner user created with ID: ${userDoc.id}`);
+    console.log(`Owner user created with ID: ${userDoc.id} and hashedPassword: ${hashedPassword}`);
     process.exit(0);
   } catch (err) {
     console.error('Error creating owner user:', err);
@@ -44,32 +44,32 @@ async function main() {
   }
 }
 main()
-/*async function checkUser(){
-try{
-  console.log('enter the username of the user you seek');
-    const username = (await ask('Username: ')).trim();
-    const userRef = db.collection('users');
-const foundUser = await userRef.where('username','==',username).limit(1).get();
-if(!foundUser.empty){
-  console.log(`user with username (${username}) exists!!`);
-  process.exit(0)
-}
-else{
-  console.log(`user with username ${username} does not exist`);
-  const query = (await ask(`Would you like to create user ${username}?(YES/NO)`)).trim();
-  if(query == "YES"){
-     await main();
-  }
-  else{
-     process.exit(0)
-  }
+// async function checkUser(){
+// try{
+//   console.log('enter the username of the user you seek');
+//     const username = (await ask('Username: ')).trim();
+//     const userRef = db.collection('users');
+// const foundUser = await userRef.where('username','==',username).limit(1).get();
+// if(!foundUser.empty){
+//   console.log(`user with username (${username}) exists!!`);
+//   process.exit(0)
+// }
+// else{
+//   console.log(`user with username ${username} does not exist`);
+//   const query = (await ask(`Would you like to create user ${username}?(YES/NO)`)).trim();
+//   if(query == "YES"){
+//      await main();
+//   }
+//   else{
+//      process.exit(0)
+//   }
  
-}
-}
-catch(err){
-  ('something went wrong...',err);
-  process.exit(1);
-}
-}
-checkUser()
-*/
+// }
+// }
+// catch(err){
+//   ('something went wrong...',err);
+//   process.exit(1);
+// }
+// }
+// checkUser()
+

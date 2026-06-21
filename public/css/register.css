@@ -1,0 +1,153 @@
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f6fa;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  justify-content: center;
+}
+
+.register-title {
+  color: #0984e3;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.register-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 450px; 
+  margin-bottom: 200px;
+}
+
+h2 {
+  margin-top: 0;
+  color: #2d3436;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #636e72;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+input, select {
+  padding: 0.75rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px; 
+  font-size: 1rem;
+  background: #f9f9f9;
+  width: 100%;
+}
+
+input:focus, select:focus {
+  border-color: #0984e3;
+  outline: none;
+  background: #fff;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.toggle-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #636e72;
+  cursor: pointer;
+}
+
+.register-btn {
+  background: #0984e3;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.register-btn:hover {
+  background: #74b9ff;
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #636e72;
+}
+
+.error {
+  color: #d63031;
+  background: #fab1a033;
+  padding: 0.5rem;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+}
+.message-container {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0; 
+    transform: translateY(-10px); 
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+    .register-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .register-btn:disabled {
+      background-color: #a0cfff;
+      cursor: not-allowed;
+    }
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid transparent;
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }

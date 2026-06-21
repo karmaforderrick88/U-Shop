@@ -1,6 +1,7 @@
 import { salesData,loadSalesTable,resetFilters,fetchAndLoadSalesData } from "./history.js";
 import { fetchAndRenderDebts } from "./debt.js";
 
+
 window.openTab = function(tabId, event) {
     logger.log(`sales.js: openTab called for tabId: ${tabId}`);
     if (event) {
@@ -19,14 +20,13 @@ window.openTab = function(tabId, event) {
         selectedTab.classList.add('active-tab');
         logger.log(`sales.js: Showing tab: ${tabId}`);
 
-        // NEW: Trigger data load for the specific tab
+        // Trigger data load for the specific tab
         if (tabId === 'history' && typeof loadSalesTable === 'function' && typeof fetchAndLoadSalesData === 'function') {
             logger.log('sales.js: Activating history tab, loading sales data.');
-            loadSalesTable(salesData); // Make sure salesData is populated before calling this, or fetch first
             fetchAndLoadSalesData();
         } else if (tabId === 'debt' && typeof fetchAndRenderDebts === 'function') {
             logger.log('sales.js: Activating debt tab, fetching debt data.');
-            fetchAndRenderDebts(); // Make sure debts is populated before calling this, or fetch first
+            fetchAndRenderDebts(); 
         } else if (tabId === 'summary' && typeof fetchSalesSummary === 'function') { // Added summary activation
             logger.log('sales.js: Activating summary tab, fetching summary data.');
             fetchSalesSummary();
@@ -36,10 +36,14 @@ window.openTab = function(tabId, event) {
         logger.warn(`sales.js: Tab content with ID "${tabId}" not found.`);
     }
 
-    // Optionally update the URL hash without reloading
-    window.location.hash = tabId;
+    // Update the URL hash without triggering the browser's auto-scroll jump
+    if (history.pushState) {
+        history.replaceState(null, null, `#${tabId}`);
+    } else {
+        window.location.hash = tabId; // Fallback for very old browsers
+    }
 
-    // IMPORTANT: If the sales navigation is open on mobile, close it after a tab is clicked
+    //  If the sales navigation is open on mobile, close it after a tab is clicked
     const salesNav = document.querySelector('.sales-nav');
     const salesMenuToggle = document.querySelector('.sales-menu-toggle');
     const salesMenuIcon = salesMenuToggle ? salesMenuToggle.querySelector('i') : null;

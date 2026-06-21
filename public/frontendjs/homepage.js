@@ -1,9 +1,5 @@
+
 $(document).ready(function () {
-    // Mobile menu toggle functionality 
-    $('#menu-toggle').on('click', function () {
-        $('body').toggleClass('menu-open');
-        $('#nav-menu').toggleClass('active');
-    });
     const $totalSales = $('#total-sales');
     const $saleModal = $('#sale-modal'); // Modal element
     const $saleForm = $('#sale-form');   // Form inside the modal
@@ -32,26 +28,35 @@ $(document).ready(function () {
         }, 5000); // Message visible for 5 seconds
     }
     
-    async function fetchAndDisplayTotalSales(){
-        try{
-            //  endpoint that returns only today's total
-            const response = await fetch('/api/sales/today-total');
-            if(!response.ok){
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const { total } = await response.json();
-            $totalSales.text(`Total Sales: Ksh ${total.toFixed(2)}`);
-            logger.log('homepage.js: successfully fetched and displayed today\'s total sales');
-            logger.apiCall('GET', '/api/sales/today-total', true);
-        } catch(err){
-            logger.error('homepage.js: error fetching and displaying total sales!!', err);
-            logger.apiCall('GET', '/api/sales/today-total', false);
-            $totalSales.text('Total Sales: --');
-            displaySaleMessage('Error fetching total sales. Please try again.', 'error');
-        }   
-    }
-    fetchAndDisplayTotalSales();
+async function fetchDashboardStats() {
+    try{
+        const response = await fetch('/api/dashboard/stats');
+         if(!response.ok){
+            throw new Error (`HTTP Error! status: ${response.status}`)
+         }
+         const data = await response.json();
+         console.log(data)
+         //update UI with data
+         $totalSales.text(`Total Sales: ${data.todayTotal.toFixed(2)}`)
+         // Note: If you add elements for bestSellingProduct or monthlyIncome to your 
+            // home.handlebars later, you can update them right here using data.bestSellingProduct
+            
+            logger.log('homepage.js: successfully fetched aggregated dashboard stats');
+            logger.apiCall('GET', '/api/dashboard/stats', true);
 
+        }
+        catch (err) {
+            console.error('homepage.js: error fetching dashboard stats', err);
+            logger.apiCall('GET', '/api/dashboard/stats', false);
+            $totalSales.text('Total Sales: Error');
+        }
+    }
+fetchDashboardStats()
+
+/**
+     * Lazy Loading: This only fetches the stock list when the user 
+     * actually opens the "Add Sale" modal, saving Firebase reads.
+     */
     async function populateItemDropDown(){
         logger.log('homepage.js: fetching items for dropdown');
         try {
@@ -97,13 +102,16 @@ $(document).ready(function () {
         }
     });
 
-    // event listener for opening the add sale form & populating it too
-    $('#add-sale-btn').on('click',function(){
+// Event listener for opening the add sale form & populating it
+    $('#add-sale-btn').on('click', function() {
         logger.log('homepage.js: add sale button clicked!!');
         $saleForm[0].reset(); 
         $saleDateInput.val(new Date().toISOString().split('T')[0]); 
+        
+        // Fetch the items ONLY when the button is clicked
         populateItemDropDown();
-        $saleModal.css('display','flex');
+        
+        $saleModal.css('display', 'flex');
         $saleMessageContainer.removeClass('success error').text('').css({ 'opacity': 0, 'transform': 'translateY(-10px)' });
     });
 
@@ -166,11 +174,11 @@ $(document).ready(function () {
             const result = await response.json(); 
 
             if (response.ok) { // Status code is 2xx
-                displaySaleMessage('Sale recorded successfully! 🎉', 'success');
+                displaySaleMessage('Sale recorded successfully! ', 'success');
                 logger.log('homepage.js: Sale recorded successfully:', result);
                 logger.apiCall('POST', '/api/sales', true);
 
-                fetchAndDisplayTotalSales();
+                fetchDashboardStats();
 
                 $saleForm[0].reset();
                 // Close modal after a short delay to allow user to see success message

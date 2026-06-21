@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complete Registration</title>
+  <link rel="stylesheet" href="/css/register.css">
+  <script src="https://kit.fontawesome.com/4822a6e79c.js" crossorigin="anonymous"></script>
+  
+  <style>
+    @keyframes rotate {
+        100% { transform: rotate(360deg); }
+    }
+    @keyframes dash {
+        0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+        50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+        100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="register-title">LEAH'S HOME DECORS</h1>
+  <div class="register-container">
+    <h2>Complete Registration</h2>
+
+    {{#if error}}
+    <div class="error">{{error}}</div>
+    {{/if}}
+
+    <form id="complete-reg-form" method="POST" action="/complete-registration">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" value="{{email}}" readonly disabled>
+        <input type="hidden" name="email" value="{{email}}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" id="password" name="password" required>
+          <button class="toggle-button tactile-btn" type="button">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      <input type="hidden" name="token" value="{{token}}">
+
+      <button type="submit" id="submit-btn" class="register-btn tactile-btn">Create Account</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // === Handle ALL Password Toggles Dynamically ===
+      const toggleButtons = document.querySelectorAll('.toggle-button');
+      
+      toggleButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const inputField = this.previousElementSibling; 
+            const icon = this.querySelector('i'); 
+            
+            const isPassword = inputField.getAttribute('type') === 'password';
+            inputField.setAttribute('type', isPassword ? 'text' : 'password');
+            
+            if (isPassword) {
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+      });
+
+      // === Form Submit Spinner Protection ===
+      const form = document.getElementById('complete-reg-form');
+      const submitBtn = document.getElementById('submit-btn');
+
+      form.addEventListener('submit', function() {
+          if (submitBtn.disabled) return false;
+
+          submitBtn.disabled = true;
+
+          submitBtn.innerHTML = `
+            <span style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <svg style="width: 20px; height: 20px; animation: rotate 2s linear infinite;" viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" style="animation: dash 1.5s ease-in-out infinite;"></circle>
+              </svg>
+              Creating Account...
+            </span>
+          `;
+
+          return true;
+      });
+      
+    });
+  </script>
+</body>
+</html>

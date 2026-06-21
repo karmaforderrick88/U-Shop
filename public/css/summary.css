@@ -15,6 +15,7 @@
 .summary-label span{
     color:var(--accent);
     font-weight: bold;
+    font-size: 1.3rem;
 }
 .summary-buttons {
     display: flex;

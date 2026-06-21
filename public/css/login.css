@@ -177,10 +177,61 @@ body {
     .login-container button[type="submit"] {
       font-size: 1.1rem;
     }
-    .toggle-button{
-      background-color: azure;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   }
+  /* --- Updated Password Toggle Logic (Works on Desktop & Mobile) --- */
+
+.password-input-wrapper {
+  position: relative; /* This is the "anchor" for the icon */
+  display: flex;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 45px !important; /* Leaves space so text doesn't go under the icon */
+  width: 100%;
+}
+
+.toggle-button {
+  position: absolute;
+  right: 5px;
+  top: 55%; /* Vertical center adjustment */
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  color: #636e72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.toggle-button:hover {
+  color: #0984e3;
+}
+
+/* --- Refined Mobile Styles --- */
+@media (max-width: 600px) {
+  body {
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+  .login-title {
+    font-size: 1.5rem;
+    margin-top: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .login-container {
+    padding: 1.2rem 0.7rem;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0.5rem;
+  }
+  .login-container h2 {
+    font-size: 1.2rem;
+  }
+}

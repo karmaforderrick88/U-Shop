@@ -1,5 +1,11 @@
+{{#section 'css'}}
+    <link rel="stylesheet" href="/css/sales.css">
+    <link rel="stylesheet" href="/css/summary.css"> 
+    <link rel="stylesheet" href="/css/debt.css">
+    <link rel="stylesheet" href="/css/history.css">
+{{/section}}
 <div class="sales-nav-container">
-    <button id="sales-menu-toggle" class="sales-menu-toggle">
+    <button id="sales-menu-toggle" class="sales-menu-toggle tactile-btn">
         <i class="fas fa-bars"></i> <!-- Font Awesome hamburger icon -->
     </button>
     <nav class="sales-nav">
@@ -51,7 +57,7 @@
     <section id="debt">
         <div class="debt-container">
             <div id="table-debt">
-        <h1>Check your Debts</h1>
+        <h1>Debts Records</h1>
         <table>
             <thead>
                 <tr>
@@ -67,7 +73,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn-debt">Add Debt</button>
+    <button class="btn-debt tactile-btn">Add Debt</button>
     {{>_clearDebtModal}}
     </div>
     
@@ -109,7 +115,7 @@
          </div>
          
          <div class="summary-buttons">
-            <button id="refresh-btn"><i class="fa-solid fa-arrows-rotate"></i></button>
+            <button id="refresh-btn" class="tactile-btn"><i class="fa-solid fa-arrows-rotate"></i></button>
           </div>
         </section>
     </section>
@@ -128,7 +134,17 @@
     <div class="chart-container">
     <canvas id="monthlySalesChart"></canvas>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </div>
 </section>
+{{#section 'scripts'}}
+    <!-- 
+        This script is only loaded when the user is on the Sales page. 
+        It isolates all sales-related API calls and DOM manipulation.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="/frontendjs/sales.js"></script>
+    <script type="module" src="/frontendjs/summary.js"></script>
+    <script type="module" src="/frontendjs/debt.js"></script>
+    <script type="module" src="/frontendjs/history.js"></script>
+{{/section}}
 

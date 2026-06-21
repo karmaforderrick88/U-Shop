@@ -1,12 +1,16 @@
 import { Router } from 'express'; 
-import {   getSales,createNewSale, getTodaysTotal, getSalesSummary } from '../controllers/salesController.js'; 
-import { ensureAuthenticated, ensureAdminOrOwner } from '../middleware/authMiddleware.js';
+import { getSales, createNewSale, getTodaysTotal, getSalesSummary, getDashboardStats } from '../controllers/salesController.js'; 
+import { ensureAuthenticated } from '../middleware/authMiddleware.js';
 
 const router = Router(); 
 
+// All sales routes require authentication to ensure req.session.userId is available
+router.get('/dashboard/stats', ensureAuthenticated, getDashboardStats);
 router.get('/sales', ensureAuthenticated, getSales);
-router.get('/sales/today-total',ensureAuthenticated, getTodaysTotal);
+router.get('/sales/today-total', ensureAuthenticated, getTodaysTotal);
 router.post('/sales', ensureAuthenticated, createNewSale);
-router.get('/sales/summary', getSalesSummary);
+
+// Summary MUST be authenticated because the controller uses req.session.userId to filter data
+router.get('/sales/summary', ensureAuthenticated, getSalesSummary);
 
 export default router;

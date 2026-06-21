@@ -1,8 +1,16 @@
-<div id="clear-debt-modal">
-  <div class="modal-content">
-    <p>Are you sure you want to clear this debt?</p>
-    <input type="hidden" id="clear-debt-id" />
-    <button id="clear-debt-confirm">Yes, Clear</button>
-    <button id="clear-debt-cancel">Cancel</button>
-  </div>
+<div id="clear-debt-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="text-align: center;">
+        <h2 style="color: #dc3545; margin-bottom: 10px; font-weight: bold;">Warning</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+            Are you sure you want to clear this debt?<br>
+            <strong style="font-size: 1.2rem; font-weight: bold;">This action cannot be undone!</strong>
+        </p>
+        
+        <input type="hidden" id="clear-debt-id" />
+        
+        <div class="form-actions" style="justify-content: center; margin-top: 20px;">
+            <button id="clear-debt-cancel" class="cancel-btn tactile-btn">Cancel</button>
+            <button id="clear-debt-confirm" class="delete-btn tactile-btn">Yes, Clear</button>
+        </div>
+    </div>
 </div>

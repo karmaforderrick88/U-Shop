@@ -16,7 +16,7 @@
     #menu-toggle{
         display:block;
         right: 2px;
-        z-index: 1002;
+        z-index: 1004;
         background-color:#3a0ca3;;
     }
     #nav-menu {
@@ -118,7 +118,7 @@
         position: fixed;
         top: 0;
         width: 100%;
-        z-index: 1003;
+        z-index: 1002;
         height:65px;
         padding:0 10px;
         font-size: 24px;
@@ -219,21 +219,7 @@ h2{
 .edit-button:hover {
     background-color: #be188f; 
 }
-.delete-button {
-    padding: 8px 12px;
-    border-radius: 6px;
-    background-color: red;
-    color: white; 
-    border: none; 
-    cursor: pointer;
-    font-size: 15px; 
-    transition: background-color 0.2s ease; 
-}
-.delete-button:hover {
-    background-color:rgb(97, 9, 9); 
-}
 
-}
 
 .modal {
     display: none;
@@ -255,6 +241,9 @@ h2{
     max-width: 500px; 
     border-radius: 8px; 
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* NEW: Makes the modal scrollable on small screens */
+    max-height: 85vh; 
+    overflow-y: auto; 
   }
   .modal label {
     display: block;
@@ -268,44 +257,77 @@ h2{
     padding: 10px;
     border-radius: 4px;
   }
-  .form-actions {
+.form-actions {
     display: flex;
-    
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-    margin-top: 20px;
-  }
-  .save-btn, .cancel-btn { 
-        width: 48%; 
-        max-width: 180px; 
-        padding: 12px 15px; 
-        border-radius: 8px;
-        font-size: 18px; 
-        font-weight: 500; 
-        transition: background 0.3s, box-shadow 0.2s, transform 0.2s; 
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-        border: none; 
-        text-align: center; 
-    }
+    justify-content: flex-end; /* Groups buttons to the right */
+    gap: 15px; /* Comfortable spacing */
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-light, #e9ecef);
+    width: 100%;
+}
+.save-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background-color: var(--primary, #4361ee); /* Brand primary color */
+    color: white;
+    box-shadow: 0 2px 5px rgba(67, 97, 238, 0.3);
+    transition: all 0.2s ease;
+}
+.cancel-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa; /* Neutral gray background */
+    color: #495057; /* Neutral dark gray text */
+    transition: all 0.2s ease;
+}
+.save-btn:hover {
+    background-color: var(--primary-hover, #3a56d4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.4);
+}
 
-    .save-btn {
-        background: var(--primary); 
-        color: white;
-    }
+.cancel-btn:hover {
+    background-color: #e2e6ea;
+    color: #212529;
+}
 
-    .cancel-btn {
-        background: var(--text); 
-        color: white;
-    }
-    .save-btn:hover, .cancel-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .save-btn:active, .cancel-btn:active {
-        transform: translateY(0);
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); 
-    }
+.save-btn:active, .cancel-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+.save-btn:disabled {
+    background-color: #a0aec0; /* Faded grayish-blue */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+.delete-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background-color: #dc3545; /* Standard danger red */
+    color: white;
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.3);
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
 
     /* Logout Button Mobile Styles */
     #nav-menu .logout-btn {
@@ -352,5 +374,108 @@ h2{
         padding: 6px 10px; /* Smaller padding on mobile */
         font-size: 12px; /* Smaller text on mobile */
     }
+
+/* --- TABLE TO CARD TRANSFORMATION --- */
+    table.card-view {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table.card-view thead {
+        display: none; 
+    }
+
+    table.card-view tbody tr {
+        display: block;
+        background: #ffffff;
+        margin-bottom: 16px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1); 
+        padding: 15px;
+        border: 1px solid #eaeaea;
+    }
+
+    table.card-view tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.95rem;
+    }
+
+    table.card-view tbody td:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-top: 10px;
+        justify-content: flex-end; 
+        gap: 10px; 
+    }
+
+    table.card-view tbody td:nth-of-type(1)::before { content: "Item:"; font-weight: bold; color: #555; }
+    table.card-view tbody td:nth-of-type(2)::before { content: "Quantity:"; font-weight: bold; color: #555; }
+    table.card-view tbody td:nth-of-type(3)::before { content: "Selling Price:"; font-weight: bold; color: #555; }
+    table.card-view tbody td:nth-of-type(4)::before { content: "Cost Price:"; font-weight: bold; color: #555; }
+
+    /* Hide the injected labels on the empty state message */
+    table.card-view tbody td[colspan]::before { 
+        content: none !important; 
+    }
+    
+    /* Center the empty message nicely in the card */
+    table.card-view tbody td[colspan] {
+        justify-content: center;
+        font-style: italic;
+        color: #777;
+    }
+
+/* --- TOP CONTROLS STACKING --- */
+    #stock-controls { 
+        display: flex;
+        flex-wrap: wrap; /* Allows elements to sit side-by-side */
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    #stock-controls input[type="text"] {
+        width: 100%;
+        order: 1; /* Forces the search bar to the top row */
+        box-sizing: border-box;
+        padding: 12px;
+        border-radius: 8px; 
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    #stock-controls #add-stock-btn {
+        flex: 1; /* Takes up the remaining space on the second row */
+        order: 2;
+        box-sizing: border-box;
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    #stock-controls #view-toggle-btn {
+        flex: 0 0 auto; /* Prevents the button from stretching */
+        order: 3;
+        box-sizing: border-box;
+        padding: 12px 20px; /* Keeps the icon nicely padded but compact */
+        border-radius: 8px;
+    }
+
+    /* --- BUTTON POLISH --- */
+    .action-btn, 
+    tbody td button { 
+        border-radius: 6px;
+        padding: 8px 14px;
+        border: none;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.1s ease;
+    }
+
+    tbody td button:active {
+        transform: scale(0.96);
+    }
   
-  
+}

@@ -6,14 +6,13 @@
     <title>LEAH'S HOME DECORS</title>
 
     <script src="/frontendjs/logger.js"></script>
-    <link rel="stylesheet" href="/css/mobile.css" media="screen and (max-width: 768px)">
     <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/mobile.css" media="screen and (max-width: 768px)">
     <link rel="stylesheet" href="/css/desktop.css" media="screen and (min-width: 769px)">
-        <link rel="stylesheet" href="/css/stocks.css">
-        <link rel="stylesheet" href="/css/sales.css">
-    <link rel="stylesheet" href="/css/debt.css">
-    <link rel="stylesheet" href="/css/history.css">
-     <link rel="stylesheet" href="/css/summary.css">
+    
+    <!-- Dynamic CSS Blocks -->
+    {{{_sections.css}}}
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://kit.fontawesome.com/4822a6e79c.js" crossorigin="anonymous"></script>
 </head>
@@ -21,7 +20,7 @@
 
     <header>
         <h1>{{pageTitle}}</h1>
-        <button id="menu-toggle" class="menu-icon">
+        <button id="menu-toggle" class="menu-icon tactile-btn">
           <i class="fa-solid fa-compass"></i>
         </button>
     </header>
@@ -31,7 +30,8 @@
             <li class="{{#if (eq activeNav 'dashboard')}}active{{/if}}"><a href="/">Dashboard</a></li> 
             <li class="{{#if (eq activeNav 'stocks')}}active{{/if}}"><a href="/stocks">Stock</a></li> 
             <li class="{{#if (eq activeNav 'sales')}}active{{/if}}"><a href="/sales">Sales</a></li>
-            <button class="logout-btn"><a href="/logout"><i class="fa-solid fa-sign-out-alt"></i> LOGOUT</a></button>
+            <li><a href="/gallery/{{businessId}}" target="_blank"><i class="fa-solid fa-images"></i> Gallery</a></li>
+            <button class="logout-btn tactile-btn"><a href="/logout"><i class="fa-solid fa-sign-out-alt"></i> LOGOUT</a></button>
         </ul>
     </nav>
 
@@ -39,13 +39,16 @@
         {{{body}}}
     </main>
 
-        <script type="module" src="/frontendjs/homepage.js"></script>
-        <script type="module" src="/frontendjs/stocks.js"></script>
+    <script type="module">
+        $(document).ready(function () {
+            $('#menu-toggle').on('click', function () {
+                $('body').toggleClass('menu-open');
+                $('#nav-menu').toggleClass('active');
+            });
+        });
+    </script>
 
-        <script type="module" src="/frontendjs/history.js"></script>
-        <script type="module" src="/frontendjs/debt.js"></script>
-    <script  type="module" src="/frontendjs/summary.js"></script>
-    <script type="module" src="/frontendjs/sales.js"></script> 
-    <script type="module" src="/frontendjs/users.js"></script>
+    <!-- Dynamic Script Blocks - Only loads what the current page needs -->
+    {{{_sections.scripts}}}
 </body>
 </html>

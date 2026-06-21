@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{pageTitle}} - Leah's Home Decors</title>
+    <link rel="stylesheet" href="/css/gallery.css">
+    <style>
+        /* Add some basic styling for our new controls */
+        .gallery-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .gallery-controls input, .gallery-controls select {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+    </style>
+</head>
+<body data-business-id="{{businessId}}">
+    <header class="gallery-header">
+        <div class="header-content">
+            <h1>Leah's Home Decors</h1> 
+            <p>Welcome to our public catalog</p>
+        </div>
+    </header>
+
+    <main class="gallery-container">
+        <button id="back-btn" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <div class="gallery-controls" id="gallery-controls" style="display: none;">
+            <input type="text" id="search-input" placeholder="Search for products...">
+            <select id="price-filter">
+                <option value="all">All Prices</option>
+                <option value="under500">Under Ksh 500</option>
+                <option value="500to2000">Ksh 500 to  2,000</option>
+                <option value="over2000">Over Ksh 2,000</option>
+            </select>
+        </div>
+        <div id="loading-state" class="status-message">
+            <p>Loading our latest collections...</p>
+        </div>
+
+        <div id="error-state" class="status-message error" style="display: none;">
+            <p>Sorry, we couldn't load the gallery at this time.</p>
+        </div>
+
+        <div id="product-grid" class="product-grid" style="display: none;">
+            </div>
+    </main>
+
+    <footer class="gallery-footer">
+        <p>&copy; 2026 Leah's Home Decors. All rights reserved.</p>
+    </footer>
+    <script type="module" src="/frontendjs/gallery.js"></script>
+</body>
+</html>

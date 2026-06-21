@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('createUserForm');
   const messageDiv = document.getElementById('userMessage');
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
       username: form.username.value.trim(),
       password: form.password.value,
       name: form.name.value.trim(),
+      email: form.email.value.trim(),
       role: form.role.value
     };
 

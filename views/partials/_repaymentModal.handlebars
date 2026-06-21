@@ -1,3 +1,4 @@
+
        <div class="modal-content">
             <h2 class="text-2xl font-bold mb-4">Record Debt Repayment</h2>
             <div id="repayment-message-container" class="message-container"></div>
@@ -7,29 +8,20 @@
                 <div class="input-group">
                     <label for="repayment-customer-name" class="repayment-label">Customer:</label>
                     <p id="repayment-customer-name" class="repayment-p"></p>
-                </div>
-
-                <div class="input-group">
                     <label for="repayment-original-amount" class="repayment-label">Original Debt:</label>
                     <p id="repayment-original-amount" class="repayment-p"></p>
-                </div>
-
-                <div class="input-group">
                     <label for="repayment-outstanding-amount" class="repayment-label">Outstanding Balance:</label>
                     <p id="repayment-outstanding-amount" class="repayment-p"></p>
-                </div>
-
-                <div class="input-group">
                     <label for="repayment-amount-input" class="repayment-label">Amount to Repay:</label>
                     <input type="number" id="repayment-amount-input" name="repaymentAmount" step="0.01" min="0.01" placeholder="Enter amount paid" class="repayment-input">
                 </div>
 
-                <div class="modal-buttons">
-                    <button type="submit" id="submit-repayment-btn">
-                        Record Repayment
-                    </button>
-                    <button type="button" id="repayment-form-cancel">
+                <div class="form-actions">
+                     <button type="button" id="repayment-form-cancel" class="cancel-btn tactile-btn">
                         Cancel
+                    </button>
+                    <button type="submit" id="submit-repayment-btn" class="save-btn tactile-btn">
+                        Record Repayment
                     </button>
                 </div>
             </form>

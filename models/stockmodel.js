@@ -1,100 +1,138 @@
 import { db } from '../firebase.js';
-import logger from '../utils/logger.js';
+import Logger from '../utils/logger.js';
 const stockCollection = db.collection('stockitems');
 
-async function getAllStockItems() {
-    logger.log('Firestore: Fetching all stock items...');
+
+/**
+ * Retrieves all stock items belonging to a specific user
+ * @param {string} userId - The ID of the logged-in user
+ */
+async function getAllStockItems(userId) {
+    if (!userId) throw new Error('User ID is required to fetch stock.')
+    Logger.log(`Firestore: Fetching stock items for user ${userId}`);
     try {
-        const snapshot = await stockCollection.get();
+        const snapshot = await stockCollection.where('ownerId','==',userId).get();// filter by ownerid to ensure data separation
         const items = [];
         snapshot.forEach(doc => {
             items.push({ id: doc.id, ...doc.data() });
         });
         return items;
     } catch (error) {
-        logger.error('Firestore Error: Failed to get all stock items:', error);
+        Logger.error('Firestore Error: Failed to get all stock items:', error);
         throw new Error('Could not fetch stock items from database.');
     }
 }
+/**
+ * 
+ * @param {object} newItem - item being added 
+ * @param {*string} userId - id of logged in user
+ * @returns 
+ */
 
-async function addStockItem(newItem) {
-    logger.log('Firestore: Adding new stock item:', newItem);
+async function addStockItem(newItem, userId) {
+    if (!userId) throw new Error('User ID is required to add stock.');
+    
+    Logger.log('Firestore: Adding new stock item:', newItem);
     try {
-        const itemToAdd = { ...newItem,
+        const itemToAdd = { 
+            ...newItem,
+            ownerId: userId, //  Tag the record with the owner
             costPrice: typeof newItem.costPrice === 'number' && newItem.costPrice >= 0 ? newItem.costPrice : 0,
+            createdAt: new Date()
          };
         delete itemToAdd.id;
 
         const docRef = await stockCollection.add(itemToAdd);
-        return { id: docRef.id, ...newItem };
+        return { id: docRef.id, ...itemToAdd };
     } catch (error) {
-        logger.error('Firestore Error: Failed to add stock item:', error);
+        Logger.error('Firestore Error: Failed to add stock item:', error);
         throw new Error('Could not add stock item to database.');
     }
 }
 
-async function updateStockItem(id, updatedData) {
+/**
+ * Updates a stock item only if it belongs to the user
+ */
+async function updateStockItem(id, updatedData, userId) {
     if (!stockCollection) {
-        logger.error('StockModel: Firestore stockCollection is not initialized. Cannot update stock item.');
-        throw new Error('Database connection not available for stock. Please check server logs.');
+        Logger.error('StockModel: Firestore stockCollection is not initialized.');
+        throw new Error('Database connection not available.');
     }
-    logger.log(`StockModel: Updating stock item ID ${id} with data:`, updatedData);
+    
     const stockRef = stockCollection.doc(id);
 
     try {
         const doc = await stockRef.get();
         if (!doc.exists) {
-            throw new Error('Stock item not found for update.');
+            throw new Error('Stock item not found.');
+        }
+
+        // Security Check: Verify ownership before updating
+        if (doc.data().ownerId !== userId) {
+            throw new Error('Unauthorized: You do not own this item.');
         }
 
         const dataToUpdate = { ...updatedData };
-        if (typeof dataToUpdate.costPrice !== 'undefined' && typeof dataToUpdate.costPrice !== 'number' || dataToUpdate.costPrice < 0) {
-            logger.warn('StockModel: Invalid costPrice provided for update. Ignoring or setting to 0.');
+        if (typeof dataToUpdate.costPrice !== 'undefined' && (typeof dataToUpdate.costPrice !== 'number' || dataToUpdate.costPrice < 0)) {
             dataToUpdate.costPrice = 0;
         }
 
         await stockRef.update(dataToUpdate);
         const updatedDoc = await stockRef.get();
-        logger.log(`StockModel: Stock item ID ${id} successfully updated.`);
         return { id: updatedDoc.id, ...updatedDoc.data() };
 
     } catch (error) {
-        logger.error(`StockModel Error: Failed to update stock item ID ${id}:`, error);
-        throw new Error(`Could not update stock item with ID ${id}: ${error.message}`);
+        Logger.error(`StockModel Error: Failed to update stock item ID ${id}:`, error);
+        throw new Error(error.message);
     }
 }
 
-async function deleteStockItem(id) {
-    logger.log(`Firestore: Deleting stock item with ID ${id}...`);
+/**
+ * Deletes a stock item only if it belongs to the user
+ */
+async function deleteStockItem(id, userId) {
+    Logger.log(`Firestore: Attempting to delete stock item ID ${id}...`);
     try {
         const docRef = stockCollection.doc(id);
+        const doc = await docRef.get();
+        
+        if (!doc.exists) return false;
+
+        // Security Check: Verify ownership before deleting
+        if (doc.data().ownerId !== userId) {
+            throw new Error('Unauthorized: You do not own this item.');
+        }
+
         await docRef.delete();
         return true;
     } catch (error) {
-        logger.error(`Firestore Error: Failed to delete stock item ID ${id}:`, error);
-        throw new Error(`Could not delete stock item with ID ${id}.`);
+        Logger.error(`Firestore Error: Failed to delete stock item ID ${id}:`, error);
+        throw new Error(error.message);
     }
 }
-async function getStockItemById(id) {
-    if (!stockCollection) {
-            logger.error('StockModel: Firestore stockCollection is not initialized. Cannot fetch single stock item.');
-        throw new Error('Database connection not available for stock. Please check server logs.');
-    }
-    logger.log(`StockModel: Fetching stock item with ID: ${id}`);
+
+/**
+ * Fetches a single item by ID with ownership verification
+ */
+async function getStockItemById(id, userId) {
     const stockRef = stockCollection.doc(id);
     try {
         const doc = await stockRef.get();
         if (doc.exists) {
-            return { id: doc.id, ...doc.data() };
-        } else {
-            logger.warn(`StockModel: Stock item with ID ${id} not found.`);
-            return null;
+            const data = doc.data();
+            // Optional: return null if user doesn't own it to prevent discovery
+            if (data.ownerId !== userId) return null;
+            return { id: doc.id, ...data };
         }
+        return null;
     } catch (error) {
-        logger.error(`StockModel Error: Failed to get stock item ID ${id}:`, error);
-        throw new Error(`Could not fetch stock item with ID ${id}.`);
+        Logger.error(`StockModel Error: Failed to get stock item ID ${id}:`, error);
+        throw new Error('Could not fetch stock item.');
     }
 }
+
+
+
 
 export {
     getAllStockItems,
